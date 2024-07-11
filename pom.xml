@@ -58,6 +58,30 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>webjars-locator</artifactId>
+			<version>0.52</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>bootstrap</artifactId>
+			<version>5.3.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>font-awesome</artifactId>
+			<version>6.5.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -74,74 +98,6 @@
 						</exclude>
 					</excludes>
 				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>com.maciejwalkowiak.paseq</groupId>
-				<artifactId>paseq-maven-plugin</artifactId>
-				<version>0.1.1</version>
-				<configuration>    
-					<mainClass>com.example.pdv.PdvBrApplication</mainClass>
-				</configuration>
-				<!-- configuration for building the package -->
-				<executions>
-					<execution>
-						<phase>compile</phase>
-						<configuration>
-							<tasks>
-								<task>
-									<exec>
-										<directory>src/main/frontend</directory>
-										<command>npm install</command>
-									</exec>
-								</task>
-								<task>
-									<exec>
-										<directory>src/main/frontend</directory>
-										<command>npm run build</command>
-									</exec>
-								</task>
-							</tasks>
-						</configuration>
-					</execution>
-					<execution>
-						<id>dev</id>
-						<!-- configuration for running in dev mode with ./mvnw paseq:exec@dev -->
-						<configuration>
-							<tasks>
-								<!-- first run npm install -->
-								<task>
-									<exec>
-										<directory>src/main/frontend</directory>
-										<command>npm install</command>
-									</exec>
-								</task>
-								<!-- then start watch task in the background and output the result to `src/main/resources/static/main.css` -->
-								<task>
-									<async>true</async>
-									<exec>
-										<directory>src/main/frontend</directory>
-										<command>npm run watch -- -o ../resources/static/main.css</command>
-									</exec>
-								</task>
-								<!--
-								optionally post-processed CSS file can also be generated in `target` directory.
-								Changes to main.css will trigger live reload without a need to recompile the project in Intellij IDEA
-								-->
-								<task>
-									<async>true</async>
-									<exec>
-										<directory>src/main/frontend</directory>
-										<command>npm run watch -- -o ${project.build.directory}/classes/static/main.css</command>
-									</exec>
-								</task>
-								<task>
-									<goals>spring-boot:run</goals>
-								</task>
-							</tasks>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
